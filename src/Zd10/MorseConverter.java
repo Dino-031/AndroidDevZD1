@@ -1,5 +1,6 @@
 package Zd10;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class MorseConverter {
@@ -10,7 +11,7 @@ public class MorseConverter {
         String input;
         Scanner scanner = new Scanner(System.in);
         input = scanner.nextLine();
-        if(input.charAt(0) != '-' && input.charAt(1) != '.')
+        if(input.charAt(0) != '-' && input.charAt(0) != '.')
             ConvertToMorse(input,EngLetters,MorseLetters);
         else
             ConvertToEng(input,EngLetters,MorseLetters);
@@ -28,24 +29,40 @@ public class MorseConverter {
         }
     }
 
-    private static void ConvertToEng(String input,char[] eng, String[] morse)
-    {
+    private static void ConvertToEng(String input,char[] eng, String[] morse)   //Pri unosu moresove abecede nakon svakog znaka, pa cak i nakon zadnjeg znaka u stringu, potrebno je upisati razmak, a rijeci se odvajaju znakom /
+    {                                                                           // NPR unos".- -.../-... .- " za rezultat ce dati "ab ba"
         String letter="";
+
         for(int i = 0;i<input.length();i++)
         {
-            if (input.charAt(i) != ' ')
+            if (input.charAt(i) != ' ' && input.charAt(i) != '/')
             {
                 letter+=input.charAt(i);
             }
-            else if(input.charAt(i) == ' ')
+            else if(input.charAt(i) == ' ' || input.charAt(i) =='/')
             {
-                for(int j = 0;j<morse.length;j++)
+                if(input.charAt(i) == ' ')
                 {
-                    if(morse[j] == letter)
-                        System.out.printf("%s",eng[j]);
+                    for(int j = 0;j<morse.length;j++)
+                    {
+                        if(Objects.equals(letter,morse[j]))
+                            System.out.printf("%s",eng[j]);
+                    }
+                    letter = "";
                 }
-                letter = "";
+                else if(input.charAt(i) =='/')
+                {
+                    for(int j = 0;j<morse.length;j++)
+                    {
+                        if(Objects.equals(letter,morse[j]))
+                            System.out.printf("%s",eng[j]);
+                    }
+                    letter = "";
+                    System.out.printf(" ");
+                }
+
             }
+
         }
     }
 
